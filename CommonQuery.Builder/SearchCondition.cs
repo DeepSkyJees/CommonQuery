@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable UseStringInterpolation
+
 namespace CommonQuery.Builder
 {
     /// <summary>
@@ -128,27 +130,39 @@ namespace CommonQuery.Builder
                     break;
 
                 case QueryMethod.Equal:
-                    str = $"{item.Field}='{item.Value}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} = '{1}'", item.Field, item.Value);
+                    //str = $"{item.Field}='{item.Value}'";
                     break;
 
                 case QueryMethod.LessThan:
-                    str = $"{item.Field}<'{item.Value}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} < '{1}'", item.Field, item.Value);
+                    //str = $"{item.Field}<'{item.Value}'";
                     break;
 
                 case QueryMethod.GreaterThan:
-                    str = $"{item.Field}>'{item.Value}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} > '{1}'", item.Field, item.Value);
+                    //str = $"{item.Field}>'{item.Value}'";
                     break;
 
                 case QueryMethod.LessThanOrEqual:
-                    str = $"{item.Field}<='{item.Value}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} <= '{1}'", item.Field, item.Value);
+                    //str = $"{item.Field}<='{item.Value}'";
                     break;
 
                 case QueryMethod.GreaterThanOrEqual:
-                    str = $"{item.Field}>='{item.Value}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} >= '{1}'", item.Field, item.Value);
+                    //str = $"{item.Field}>='{item.Value}'";
                     break;
 
                 case QueryMethod.Like:
-                    str = $"{item.Field} like '%{item.Value}%'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} like '%{1}%'", item.Field, item.Value);
+                    //str = $"{item.Field} like '%{item.Value}%'";
                     break;
 
                 case QueryMethod.In:
@@ -162,7 +176,9 @@ namespace CommonQuery.Builder
                     {
                         strInValue = item.Value.ToString().Replace(",", "','");
                     }
-                    str = $"{item.Field} in ('{strInValue}')";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} in '{1}'", item.Field, strInValue);
+                    //str = $"{item.Field} in ('{strInValue}')";
                     break;
 
                 case QueryMethod.DateBlock:
@@ -173,24 +189,29 @@ namespace CommonQuery.Builder
                     }
                     string start = dt.Date.ToString("yyyy-MM-dd");
                     string end = dt.Date.AddDays(1).ToString("yyyy-MM-dd");
-                    str = $"{item.Field} between '{start}' and '{end}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} between '{1}' and '{2}'", item.Field, start, end);
                     break;
 
                 case QueryMethod.NotEqual:
-                    str = $"{item.Field}<>'{item.Value}'";
+                    str = string.Format("{0} <> '{1}'", item.Field, item.Value);
+                    //str = $"{item.Field}<>'{item.Value}'";
                     break;
 
                 case QueryMethod.StartsWith:
-                    str = $"{item.Field} like '{item.Value}%'";
+                    str = string.Format("{0} like '{1}%'", item.Field, item.Value);
                     break;
 
                 case QueryMethod.EndsWith:
-                    str = $"{item.Field} like '%{item.Value}'";
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} like '%{1}'", item.Field, item.Value);
                     break;
 
                 case QueryMethod.Between:
                     object[] objs = item.Value as object[];
-                    if (objs != null) str = $"{item.Field} between '{objs[0]}' and '{objs[1]}'";
+                    if (objs != null)
+                        // ReSharper disable once UseStringInterpolation
+                        str = string.Format("{0} between '{1}' and '{2}'", item.Field, objs[0], objs[1]);
                     break;
             }
 

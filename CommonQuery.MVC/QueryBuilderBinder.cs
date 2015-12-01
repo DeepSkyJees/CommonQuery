@@ -21,7 +21,7 @@ namespace CommonQuery.Builder
 
             foreach (string key in dict.Keys)
             {
-                if (key.StartsWith("Ignore_", StringComparison.Ordinal)) continue;
+                if (!key.StartsWith("JYM_", StringComparison.Ordinal)) continue;
                 var val = dict[key];
                 //处理无值的情况
                 if (string.IsNullOrEmpty(val)) continue;

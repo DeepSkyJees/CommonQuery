@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using CommonQuery.Builder;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace CommonQuery.MVC.Example.Controllers
 {
@@ -17,8 +19,10 @@ namespace CommonQuery.MVC.Example.Controllers
         /// <returns>ActionResult.</returns>
         public ActionResult List(QueryBuilder qbBuilder)
         {
-            using (this)
+            using (Models.Models contextModels = new Models.Models())
             {
+                var result = contextModels.MyEntities.Where(qbBuilder).ToList();
+                return this.Json(result);
             }
         }
     }

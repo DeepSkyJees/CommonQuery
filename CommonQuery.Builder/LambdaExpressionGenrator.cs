@@ -240,7 +240,7 @@ namespace CommonQuery.Builder
             int i = 0;
             do
             {
-                PropertyInfo property = typeOfProp.GetProperty(props[i]);
+                PropertyInfo property = typeOfProp.GetProperty(props[i], BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance);
                 if (property == null) return null;
                 typeOfProp = property.PropertyType;
                 propertyAccess = Expression.MakeMemberAccess(propertyAccess, property);

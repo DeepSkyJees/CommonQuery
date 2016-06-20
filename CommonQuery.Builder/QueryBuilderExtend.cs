@@ -129,7 +129,7 @@ namespace CommonQuery.Builder
         {
             var query = source.Where((SearchCondition)qb);
 
-            if (qb.DefaultSort && typeof(TEntity).GetProperty("SortIndex") != null)
+            if (qb.DefaultSort && typeof(TEntity).GetProperty("SortIndex", BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance) != null)
             {
                 qb.SortField = "SortIndex";
                 qb.SortOrder = "asc";

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace CommonQuery.Builder
 {
@@ -149,16 +150,36 @@ namespace CommonQuery.Builder
 
             if (qb.PageSize == 0)
                 return query;
-
-            query = query.Skip(qb.PageSize * qb.PageIndex).Take(qb.PageSize);
+            if (qb.NeedPaging)
+            {
+                query = query.Where(qb.PageSize,qb.PageIndex);
+            }
+            
 
             return query;
         }
 
-        #endregion
+        /// <summary>
+        /// Wheres the specified qb.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the t entity.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <returns>IQueryable&lt;TEntity&gt;.</returns>
+        /// <exception cref="System.Exception">Please Set Default Sort Field</exception>
+        public static IQueryable<TEntity> Where<TEntity>(this IQueryable<TEntity> source, int pageSize,int pageIndex)
+        {
+            if (source == null)
+            {
+                throw  new AggregateException("source can not be null");
+            }
+            source = source.Skip(pageSize * pageIndex).Take(pageSize);
 
-        #region
+            return source;
+        }
 
         #endregion
+        
     }
 }

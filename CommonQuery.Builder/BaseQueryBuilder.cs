@@ -6,6 +6,13 @@
     public class BaseQueryBuilder : SearchCondition
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="BaseQueryBuilder"/> class.
+        /// </summary>
+        public BaseQueryBuilder()
+        {
+            this.NeedPaging = false;
+        }
+        /// <summary>
         ///     Gets or sets a value indicating whether [default sort].
         /// </summary>
         /// <value><c>true</c> if [default sort]; otherwise, <c>false</c>.</value>
@@ -21,7 +28,7 @@
         ///     Gets or sets the size of the page.
         /// </summary>
         /// <value>The size of the page.</value>
-        public int PageSize { get; set; } 
+        public int PageSize { get; set; }
 
         /// <summary>
         ///     Gets or sets the sort field.
@@ -40,6 +47,13 @@
         /// </summary>
         /// <value>The totol count.</value>
         public int TotolCount { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets  needPaging 
+        /// </summary>
+        /// <value><c>true</c> if [need paging]; otherwise, <c>false</c>.</value>
+        public bool NeedPaging { get; set; }
 
         /// <summary>
         ///     Sets the sort.

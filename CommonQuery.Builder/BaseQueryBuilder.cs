@@ -21,7 +21,7 @@
         ///     Gets or sets the size of the page.
         /// </summary>
         /// <value>The size of the page.</value>
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } 
 
         /// <summary>
         ///     Gets or sets the sort field.

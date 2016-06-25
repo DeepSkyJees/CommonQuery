@@ -10,7 +10,19 @@ Query for MVC and API Example Code
 </form>
 ```
 </prev>
-####2、C# Code
+####2、JS Code
+```sh
+<script>
+    $(function () {
+        $("#submit").on("click", function () {
+            $.post("@Url.Action("List")", $("#submitForm").serializeArray(), function (data) {
+                $("#result").text(JSON.stringify(data));
+            });
+        });
+    });
+</script>
+```
+####3、C# Code
 ```sh
 public ActionResult List(QueryBuilder qbBuilder)
 {

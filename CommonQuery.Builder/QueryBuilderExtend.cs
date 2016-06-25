@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace CommonQuery.Builder
 {
@@ -128,16 +129,9 @@ namespace CommonQuery.Builder
         /// <exception cref="System.Exception">Please Set Default Sort Field</exception>
         public static IQueryable<TEntity> Where<TEntity>(this IQueryable<TEntity> source, BaseQueryBuilder qb)
         {
-            if (qb.Items.Count() != 0)
-            {
-                var fields = qb.Items.Select(p => p.Field).ToList();
-                var entityFields = typeof(TEntity).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase).Select(p => p.Name);
-                var noneFields = fields.FindAll(p => !entityFields.Contains(p));
-                if (noneFields.Count() != 0)
-                {
-                    throw new Exception($"the object dose not have {string.Join(",", noneFields)}fields");
-                }
-            }
+            qb.CheckEntityField<TEntity>();
+
+
             var query = source.Where((SearchCondition)qb);
 
             //if (qb.DefaultSort && typeof(TEntity).GetProperty(qb.SortField, BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance) == null)
@@ -189,7 +183,66 @@ namespace CommonQuery.Builder
             return source;
         }
 
+
+        /// <summary>
+        /// Checks the entity field.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the t entity.</typeparam>
+        /// <param name="qb">The qb.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="System.Exception">$the object dose not have {string.Join(;,, noneFields)} fields</exception>
+        public static bool CheckEntityField<TEntity>(this BaseQueryBuilder qb)
+        {
+            if (qb.Items.Count() != 0)
+            {
+                var fields = qb.Items.Select(p => p.Field).ToList();
+                var entityFields = typeof(TEntity).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase).Select(p => p.Name);
+                var noneFields = fields.FindAll(p => !entityFields.Contains(p));
+                if (noneFields.Count() != 0)
+                {
+                    throw new Exception($"the object dose not have {string.Join(",", noneFields)} fields");
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks the entity sort field.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the t entity.</typeparam>
+        /// <param name="qb">The qb.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="System.Exception">$the TEntity has not {qb.SortField} property</exception>
+        public static bool CheckEntitySortField<TEntity>(this BaseQueryBuilder qb)
+        {
+            PropertyInfo sortProperty = typeof(TEntity).GetProperty(qb.SortField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            if (sortProperty == null)
+                throw new Exception($"the TEntity has not SortField value's property");
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Checks the entity sort order.
+        /// </summary>
+        /// <param name="qb">The qb.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <exception cref="System.Exception">$the TEntity has not {qb.SortField} property</exception>
+        public static bool CheckEntitySortOrder(this BaseQueryBuilder qb)
+        {
+            List<string> orderType = new List<string> {"asc","desc"};
+
+            if (orderType.Contains(qb.SortOrder.ToLower()))
+            {
+                return true;
+            }
+
+            throw new Exception("please set SortOrder value(asc or desc)");
+        }
+
         #endregion
-        
+
     }
 }

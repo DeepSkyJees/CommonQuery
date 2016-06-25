@@ -10,6 +10,7 @@
         /// </summary>
         public BaseQueryBuilder()
         {
+            this._pageSize = 10;
             this.NeedPaging = false;
         }
         /// <summary>
@@ -24,11 +25,24 @@
         /// <value>The index of the page.</value>
         public int PageIndex { get; set; }
 
+        private int _pageSize;
         /// <summary>
-        ///     Gets or sets the size of the page.
+        /// Gets or sets the size of the page.(Default value 10)
         /// </summary>
         /// <value>The size of the page.</value>
-        public int PageSize { get; set; }
+        public int PageSize {
+            get { return this._pageSize; }
+            set
+            {
+                if (value == 0)
+                {
+                    value = 10;
+                }
+                this._pageSize = value;
+            }
+        }
+       
+       
 
         /// <summary>
         ///     Gets or sets the sort field.

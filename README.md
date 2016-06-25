@@ -5,7 +5,7 @@ Query for MVC and API Example Code
 ```sh
 <form id="submitForm" method="POST">
     <input name='prefix' value='JYM_' type='hidden'>
-    <input name="$EQ$Name"/>
+    <input name="JYM_$EQ$Name"/>
     <input id="submit" type="button" value="Search"/>
 </form>
 ```

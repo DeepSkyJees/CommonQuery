@@ -1,5 +1,6 @@
 ﻿using CommonQuery.MVC;
 using System;
+using System.Collections.Specialized;
 using System.Web.Mvc;
 
 namespace CommonQuery.Builder
@@ -16,12 +17,16 @@ namespace CommonQuery.Builder
         /// <returns>System.Object.</returns>
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            var model = (QueryBuilder)(bindingContext.Model ?? new QueryBuilder());
-            var dict = controllerContext.HttpContext.Request.Params;
-
+            QueryBuilder model = (QueryBuilder)(bindingContext.Model ?? new QueryBuilder());
+            NameValueCollection dict = controllerContext.HttpContext.Request.Params;
+            string prefix = dict["prefix"];
+            if (prefix == null)
+            {
+                throw new Exception("it dose not have prefix,please go to set<input name='prefix' value='JYM' type='hidden'>");
+            }
             foreach (string key in dict.Keys)
             {
-                if (!key.StartsWith("JYM_", StringComparison.Ordinal)) continue;
+                if (!key.StartsWith($"{prefix}_", StringComparison.Ordinal)) continue;
                 var val = dict[key];
                 //处理无值的情况
                 if (string.IsNullOrEmpty(val)) continue;

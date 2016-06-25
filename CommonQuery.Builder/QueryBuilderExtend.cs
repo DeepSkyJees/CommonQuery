@@ -128,21 +128,31 @@ namespace CommonQuery.Builder
         /// <exception cref="System.Exception">Please Set Default Sort Field</exception>
         public static IQueryable<TEntity> Where<TEntity>(this IQueryable<TEntity> source, BaseQueryBuilder qb)
         {
+            if (qb.Items.Count() != 0)
+            {
+                var fields = qb.Items.Select(p => p.Field).ToList();
+                var entityFields = typeof(TEntity).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase).Select(p => p.Name);
+                var noneFields = fields.FindAll(p => !entityFields.Contains(p));
+                if (noneFields.Count() != 0)
+                {
+                    throw new Exception($"the object dose not have {string.Join(",", noneFields)}fields");
+                }
+            }
             var query = source.Where((SearchCondition)qb);
 
-            if (qb.DefaultSort && typeof(TEntity).GetProperty("SortIndex", BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance) != null)
-            {
-                qb.SortField = "SortIndex";
-                qb.SortOrder = "asc";
-            }
+            //if (qb.DefaultSort && typeof(TEntity).GetProperty(qb.SortField, BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance) == null)
+            //{
+            //    qb.SortField = "SortIndex";
+            //    qb.SortOrder = "asc";
+            //}
 
             qb.TotolCount = query.Count();
 
-            if (!string.IsNullOrEmpty(qb.SortField))
+            if (!string.IsNullOrEmpty(qb.SortField)&& qb.DefaultSort)
             {
                 query = query.OrderBy(qb.SortField, string.Equals(qb.SortOrder, SortMode.Asc.ToString(), StringComparison.CurrentCultureIgnoreCase));
             }
-            else
+            else if(qb.DefaultSort)
             {
                 throw new Exception("Please Set Default Sort Field");
                 //query = query.OrderBy<TEntity>("ID", false);

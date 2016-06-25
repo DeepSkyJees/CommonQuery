@@ -3,8 +3,9 @@
 }
 
 <form id="submitForm" method="POST">
-    <input name="JYM_$EQ$Name" />
-    <input id="submit" type="button" value="查询" />
+    <input name='prefix' value='JYM' type='hidden'>
+    <input name="JYM_$EQ$Name"/>
+    <input id="submit" type="button" value="Search"/>
 </form>
 <div>
     <dl>Result:</dl>
@@ -15,7 +16,6 @@
 <script>
     $(function () {
         $("#submit").on("click", function () {
-            debugger;
             $.post("@Url.Action("List")", $("#submitForm").serializeArray(), function (data) {
                 $("#result").text(JSON.stringify(data));
             });

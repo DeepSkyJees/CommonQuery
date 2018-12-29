@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CommonQuery.Builder
+namespace CommonQuery.NetCore.Builder
 {
     /// <summary>
     ///     Class BaseQueryableExtend.
@@ -140,11 +140,11 @@ namespace CommonQuery.Builder
 
             qb.TotolCount = query.Count();
 
-            if (!string.IsNullOrEmpty(qb.SortField) && qb.DefaultSort)
+            if (!string.IsNullOrEmpty(qb.SortField)&& qb.DefaultSort)
             {
                 query = query.OrderBy(qb.SortField, string.Equals(qb.SortOrder, SortMode.Asc.ToString(), StringComparison.CurrentCultureIgnoreCase));
             }
-            else if (qb.DefaultSort)
+            else if(qb.DefaultSort)
             {
                 throw new Exception("Please Set Default Sort Field");
                 //query = query.OrderBy<TEntity>("ID", false);
@@ -154,16 +154,12 @@ namespace CommonQuery.Builder
                 return query;
             if (qb.NeedPaging)
             {
-                query = query.Where(qb.PageSize, qb.PageIndex);
+                query = query.Where(qb.PageSize,qb.PageIndex);
             }
-
+            
 
             return query;
         }
-
-
-
-       
 
         /// <summary>
         /// Wheres the specified qb.
@@ -174,11 +170,11 @@ namespace CommonQuery.Builder
         /// <param name="pageIndex">Index of the page.</param>
         /// <returns>IQueryable&lt;TEntity&gt;.</returns>
         /// <exception cref="System.Exception">Please Set Default Sort Field</exception>
-        public static IQueryable<TEntity> Where<TEntity>(this IQueryable<TEntity> source, int pageSize, int pageIndex)
+        public static IQueryable<TEntity> Where<TEntity>(this IQueryable<TEntity> source, int pageSize,int pageIndex)
         {
             if (source == null)
             {
-                throw new AggregateException("source can not be null");
+                throw  new AggregateException("source can not be null");
             }
             source = source.Skip(pageSize * pageIndex).Take(pageSize);
 
@@ -234,7 +230,7 @@ namespace CommonQuery.Builder
         /// <exception cref="System.Exception">$the TEntity has not {qb.SortField} property</exception>
         public static bool CheckEntitySortOrder(this BaseQueryBuilder qb)
         {
-            List<string> orderType = new List<string> { "asc", "desc" };
+            List<string> orderType = new List<string> {"asc","desc"};
 
             if (orderType.Contains(qb.SortOrder.ToLower()))
             {

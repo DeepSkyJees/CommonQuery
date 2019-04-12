@@ -1,25 +1,29 @@
-﻿using CommonQuery.Builder;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
+using CommonQuery.Builder;
+using Microsoft.AspNetCore.Mvc;
+using System.Runtime;
+using System.Reflection;
 
-namespace CommonQuery.Api.Example.Controllers
+namespace CommonQuery.Core.Api.Example.Controllers
 {
-    public class DefaultController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ValuesController : ControllerBase
     {
-        public IHttpActionResult Post(BaseQueryBuilder qb)
+        [HttpPost]
+        public IActionResult Post(BaseQueryBuilder qb)
         {
-            var s = new string(new char[] { }).GetType().GetMethods();
-            //var s = Type.GetMethod("Contains");
+            var methods = typeof(string).GetMethods();
+            MethodInfo methodInfo = methods.FirstOrDefault(p => p.Name == "Contains");
             IQueryable<User> users = new User().GetUsers().Where(qb);
             return this.Ok(users);
         }
+       
     }
-
+    // GET api/values
     public class User
     {
         public int Id { get; set; }

@@ -167,7 +167,8 @@ namespace CommonQuery.Builder
                 new LikeTransformProvider(),
                 new UnixTimeTransformProvider(),
                 new DateBlockTransFormProvider(),
-                new BetweenTransformProvider()
+                new BetweenTransformProvider(),
+                //new ContainsTransformProvider()
             };
         }
 
@@ -255,7 +256,16 @@ namespace CommonQuery.Builder
             LambdaExpression exp = GetPropertyLambdaExpression<T>(item, param);
             foreach (var provider in TransformProviders.Where(provider => provider.Match(item, exp.Body.Type)))
             {
-                return GetGroupExpression<T>(param, provider.Transform(item, exp.Body.Type), Expression.AndAlso);
+                if (item.Method == QueryMethod.Contains)
+                {
+
+                    return GetGroupExpression<T>(param, provider.Transform(item, exp.Body.Type), Expression.Or);
+                }
+                else
+                {
+
+                    return GetGroupExpression<T>(param, provider.Transform(item, exp.Body.Type), Expression.AndAlso);
+                }
             }
             var constant = ChangeTypeToExpression(item, exp.Body.Type);
             return ExpressionDict[item.Method](exp.Body, constant);

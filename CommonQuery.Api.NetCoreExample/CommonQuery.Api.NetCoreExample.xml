@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CommonQuery.Api.NetCoreExample</name>
+    </assembly>
+    <members>
+        <member name="T:CommonQuery.Api.NetCoreExample.Startup">
+            <summary>
+            Class Startup.
+            </summary>
+        </member>
+        <member name="M:CommonQuery.Api.NetCoreExample.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CommonQuery.Api.NetCoreExample.Startup"/> class.
+            </summary>
+            <param name="configuration">The configuration.</param>
+        </member>
+        <member name="P:CommonQuery.Api.NetCoreExample.Startup.Configuration">
+            <summary>
+            Gets the configuration.
+            </summary>
+            <value>The configuration.</value>
+        </member>
+        <member name="M:CommonQuery.Api.NetCoreExample.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures the services.
+            </summary>
+            <param name="services">The services.</param>
+        </member>
+        <member name="M:CommonQuery.Api.NetCoreExample.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Configures the specified application.
+            </summary>
+            <param name="app">The application.</param>
+            <param name="env">The env.</param>
+        </member>
+    </members>
+</doc>

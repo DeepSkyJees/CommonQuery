@@ -165,6 +165,12 @@ namespace CommonQuery.Builder
                     //str = $"{item.Field} like '%{item.Value}%'";
                     break;
 
+                case QueryMethod.NotLike:
+                    // ReSharper disable once UseStringInterpolation
+                    str = string.Format("{0} not like '%{1}%'", item.Field, item.Value);
+                    //str = $"{item.Field} like '%{item.Value}%'";
+                    break;
+
                 case QueryMethod.In:
                     string strInValue;
                     if (item.Value is ICollection)

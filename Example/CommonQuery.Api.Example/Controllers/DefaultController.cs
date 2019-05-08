@@ -13,6 +13,7 @@ namespace CommonQuery.Api.Example.Controllers
     {
         public IHttpActionResult Post(BaseQueryBuilder qb)
         {
+            
             IQueryable<User> users = new User().GetUsers().Where(qb);
             return this.Ok(users);
         }

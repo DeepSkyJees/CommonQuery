@@ -100,6 +100,7 @@ namespace CommonQuery.Builder
                 if (!cnd.IsOrRelateion)
                 {
                     specification.AndAlso(item.Field, item.Value, item.Method);
+
                 }
                 else
                 {

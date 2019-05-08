@@ -92,7 +92,7 @@ namespace CommonQuery.Builder
         /// <returns></returns>
         public Expression<Func<TEntity, bool>> GetExpression<TEntity>()
         {
-            return LambdaExpressionGenrator.GenerateExpression<TEntity>(this.conItems);
+            return LambdaExpressionGenerator.GenerateExpression<TEntity>(this.conItems);
         }
 
         /// <summary>

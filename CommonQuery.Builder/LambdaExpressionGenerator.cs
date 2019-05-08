@@ -7,9 +7,9 @@ using System.Reflection;
 namespace CommonQuery.Builder
 {
     /// <summary>
-    ///     Class LambdaExpressionGenrator.
+    /// Class LambdaExpressionGenerator.
     /// </summary>
-    internal class LambdaExpressionGenrator
+    internal class LambdaExpressionGenerator
     {
         #region
 
@@ -21,27 +21,85 @@ namespace CommonQuery.Builder
             {
                 {
                     QueryMethod.Equal,
-                    (left, right) => { return Expression.Equal(left, right); }
+                    (left, right) =>
+                    {
+                        var canParse =  double.TryParse(right.ToString(), out double result);
+                        if (right.Type == typeof(string) && !canParse)
+                        {
+
+                            var methodInfo = typeof(String).GetMethod("CompareTo", new Type[] { typeof(String) });
+                            return Expression.Equal(Expression.Call(left, methodInfo, right),Expression.Constant(0, typeof(Int32)));
+                        }
+                        return Expression.Equal(left, right);
+                    }
                 },
                 {
                     QueryMethod.GreaterThan,
-                    (left, right) => { return Expression.GreaterThan(left, right); }
+                    (left, right) =>
+                    {
+                        var canParse =  double.TryParse(right.ToString(), out double result);
+                        if (right.Type == typeof(string) && !canParse)
+                        {
+
+                            var methodInfo = typeof(String).GetMethod("CompareTo", new Type[] { typeof(String) });
+                            return Expression.GreaterThan(Expression.Call(left, methodInfo, right),Expression.Constant(0, typeof(Int32)));
+                        }
+                        return Expression.GreaterThan(left, right);
+                    }
                 },
                 {
                     QueryMethod.GreaterThanOrEqual,
-                    (left, right) => { return Expression.GreaterThanOrEqual(left, right); }
+                    (left, right) =>
+                    {
+                        var canParse =  double.TryParse(right.ToString(), out double result);
+                        if (right.Type == typeof(string) && !canParse)
+                        {
+
+                            var methodInfo = typeof(String).GetMethod("CompareTo", new Type[] { typeof(String) });
+                            return Expression.GreaterThanOrEqual(Expression.Call(left, methodInfo, right),Expression.Constant(0, typeof(Int32)));
+                        }
+                        return Expression.GreaterThanOrEqual(left, right);
+                    }
                 },
                 {
                     QueryMethod.LessThan,
-                    (left, right) => { return Expression.LessThan(left, right); }
+                    (left, right) =>
+                    {
+                        if (right.Type == typeof(string))
+                        {
+
+                            var methodInfo = typeof(String).GetMethod("CompareTo", new Type[] { typeof(String) });
+                            return Expression.LessThan(Expression.Call(left, methodInfo, right),Expression.Constant(0, typeof(Int32)));
+                        }
+                        
+                        return Expression.LessThan(left, right);
+                    }
                 },
                 {
                     QueryMethod.LessThanOrEqual,
-                    (left, right) => { return Expression.LessThanOrEqual(left, right); }
+                    (left, right) =>
+                    {
+                        var canParse =  double.TryParse(right.ToString(), out double result);
+                        if (right.Type == typeof(string) && !canParse)
+                        {
+
+                            var methodInfo = typeof(String).GetMethod("CompareTo", new Type[] { typeof(String) });
+                            return Expression.LessThanOrEqual(Expression.Call(left, methodInfo, right),Expression.Constant(0, typeof(Int32)));
+                        }
+                        return Expression.LessThanOrEqual(left, right);
+                    }
                 },
                 {
                     QueryMethod.Contains,
-                    (left, right) => left.Type != typeof(string) ? null : Expression.Call(left, typeof(string).GetMethod("Contains"), right)
+                    (left, right) =>
+                    {
+
+                        var ignoreCase = Expression.Constant(StringComparison.CurrentCultureIgnoreCase);
+                        if (left.Type != typeof(string)) return null;
+                        var resultExp = Expression.Call(left, typeof(string).GetMethod("Contains",new []{typeof(string),typeof(StringComparison)}), right,ignoreCase);
+
+                        return resultExp;
+                    }
                 },
                 {
                     QueryMethod.StdIn,
@@ -61,20 +119,34 @@ namespace CommonQuery.Builder
                 },
                 {
                     QueryMethod.NotEqual,
-                    (left, right) => { return Expression.NotEqual(left, right); }
+                    (left, right) => Expression.NotEqual(left, right)
                 },
                 {
                     QueryMethod.StartsWith,
-                    (left, right) => left.Type != typeof(string) ? null : Expression.Call(left, typeof(string).GetMethod("StartsWith", new[] { typeof(string) }), right)
+                    (left, right) => left.Type != typeof(string) ? null : 
+                        Expression.Call(left, typeof(string).GetMethod("StartsWith", new[] { typeof(string) }), right)
                 },
                 {
                     QueryMethod.EndsWith,
-                    (left, right) => left.Type != typeof(string) ? null : Expression.Call(left, typeof(string).GetMethod("EndsWith", new[] { typeof(string) }), right)
+                    (left, right) => left.Type != typeof(string) ? null : 
+                        Expression.Call(left, typeof(string).GetMethod("EndsWith", new[] { typeof(string) }), right)
                 },
                 {
                     QueryMethod.DateTimeLessThanOrEqual,
-                    (left, right) => { return Expression.LessThanOrEqual(left, right); }
-                }
+                    (left, right) =>  Expression.LessThanOrEqual(left, right)
+                },
+                {
+                    QueryMethod.NotLike,
+                    (left, right) =>
+                    {
+                        if (right.Type.IsArray) return null;
+                        var ignoreCase = Expression.Constant(StringComparison.CurrentCultureIgnoreCase);
+                        UnaryExpression resultExp =
+                            Expression.Not(Expression.Call(left, typeof(string).GetMethod("Contains",new[] {typeof(string),typeof(StringComparison)}), right,ignoreCase));
+
+                        return resultExp;
+                    }
+                },
             };
 
         #endregion
@@ -85,9 +157,9 @@ namespace CommonQuery.Builder
         private static readonly List<ITransFormProvider> TransformProviders;
 
         /// <summary>
-        ///     Initializes static members of the <see cref="LambdaExpressionGenrator" /> class.
+        ///     Initializes static members of the <see cref="LambdaExpressionGenerator" /> class.
         /// </summary>
-        static LambdaExpressionGenrator()
+        static LambdaExpressionGenerator()
         {
             TransformProviders = new List<ITransFormProvider>
             {

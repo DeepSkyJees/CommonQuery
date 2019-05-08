@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonQuery.Builder, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommonQuery.Builder.2.1.0\lib\netstandard2.0\CommonQuery.Builder.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
       <Private>True</Private>
@@ -174,10 +177,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CommonQuery.Builder\CommonQuery.Builder.csproj">
-      <Project>{b3c7bea1-7799-4bd7-a94f-8e83d107477e}</Project>
-      <Name>CommonQuery.Builder</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CommonQuery.MVC\CommonQuery.MVC.csproj">
       <Project>{892c64ed-d1cc-4801-9a74-cda5ff6db866}</Project>
       <Name>CommonQuery.MVC</Name>

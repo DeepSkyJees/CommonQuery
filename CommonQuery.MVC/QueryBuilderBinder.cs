@@ -145,6 +145,10 @@ namespace CommonQuery.Builder
                     match = "EndsWith";
                     break;
 
+                case "NL":
+                    match = "Not Like";
+                    break;
+
                 case "IGNORE":
                     match = "";
                     break;

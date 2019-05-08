@@ -83,7 +83,13 @@ namespace CommonQuery.Builder
         /// <summary>
         ///     The between
         /// </summary>
-        Between
+        Between= 15,
+
+
+        /// <summary>
+        /// The not like
+        /// </summary>
+        NotLike = 16,
     }
 
     /// <summary>

@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+
+    <form id="submitForm" method="POST">
+        <input name='prefix' value='Jeeees' type='hidden'>
+        <input name="Jeeees_$EQ$Name" />
+        <input id="submit" type="button" value="Search" />
+    </form>
+    <div>
+        <dl>Result:</dl>
+        <dl id="result"></dl>
+    </div>
+</div>
+<script src="/js/jquery-1.10.2.min.js"></script>
+<script src="/js/jquery.form.js"></script>
+<script>
+    $(function () {
+        $("#submit").on("click", function () {
+            $.post("@Url.Action("List")", $("#submitForm").serializeArray(), function (data) {
+                $("#result").text(JSON.stringify(data));
+            });
+        });
+    });
+</script>

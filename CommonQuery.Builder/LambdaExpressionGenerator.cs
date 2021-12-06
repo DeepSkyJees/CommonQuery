@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.Json;
 
 namespace CommonQuery.Builder
 {
@@ -239,8 +240,10 @@ namespace CommonQuery.Builder
 
             #endregion
 
+            var objValue = item.Value;
             var elementType = TypeUtil.GetUnNullableType(conversionType);
-            var value = Convert.ChangeType(item.Value, elementType);
+            //var value = item.Value;
+            var value = Convert.ChangeType(objValue is JsonElement ? objValue.ToString() : objValue, elementType);
             return Expression.Constant(value, conversionType);
         }
 

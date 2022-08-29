@@ -54,7 +54,7 @@ namespace CommonQuery.Api.NetCoreExample
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
 
-                c.DescribeAllEnumsAsStrings();
+                c.UseInlineDefinitionsForEnums();
 
                 c.DescribeAllParametersInCamelCase();
 
@@ -64,8 +64,7 @@ namespace CommonQuery.Api.NetCoreExample
             {
 
                 options.EnableEndpointRouting = false;
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
